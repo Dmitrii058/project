@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>АвтоМаркет — Мои Заказы</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <!-- НАВИГАЦИОННАЯ ПАНЕЛЬ СВЕРХУ -->
+    <header class="main-header" style="background: none; border: none; box-shadow: none;">
+        <div class="header-top">
+            
+            <!-- ЛОГОТИП АВТОМАРКЕТ В ВЕРХНЕМ ЛЕВЫМ УГЛУ (КЛИКАБЕЛЬНЫЙ) -->
+            <a href="glavnaya.html" class="logo" style="font-size: 22px; white-space: nowrap; margin-right: 25px; display: flex; align-items: center; gap: 8px; text-decoration: none;">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ea580c" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/>
+                    <path d="M12 6v6l4 2"/>
+                    <circle cx="12" cy="12" r="1" fill="#ea580c"/>
+                </svg>
+                <span style="font-weight: 800; letter-spacing: -0.5px; color: #000000;">Авто<span style="color: #ea580c;">Маркет</span></span>
+            </a>
+
+            <!-- ГЛАВНОЕ МЕНЮ НАВИГАЦИИ (СДВИГАЕТ БЛОК ПРОФИЛЯ ВПРАВО) -->
+            <nav class="main-nav" style="margin-right: auto;">
+                <a href="glavnaya.html" class="nav-link">Главная</a>
+                
+                <div class="dropdown">
+                    <div class="nav-label">Каталоги ▾</div>
+                    <div class="dropdown-content">
+                        <a href="catalog.html">Оригинальный каталог</a>
+                        <a href="china_catalog.html">Китайский каталог</a>
+                        <a href="replacements_catalog.html">Каталог заменителей</a>
+                        <a href="tyres_catalog.html">Каталог шин и дисков</a>
+                        <a href="lamps_catalog.html">Автолампы</a>
+                        <a href="garage.html">Гараж</a>
+                    </div>
+                </div>
+
+                <a href="cart.html" class="nav-link">Корзина</a>
+                
+                <div class="dropdown">
+                    <div class="nav-label">Заказы ▾</div>
+                    <div class="dropdown-content">
+                        <a href="orders.html?action=view" class="nav-link active">Заказы</a>
+                        <a href="returns.html">Оформление возвратов</a>
+                        <a href="claims.html">Оформление рекламаций</a>
+                    </div>
+                </div>
+
+                <div class="dropdown">
+                    <div class="nav-label">Взаиморасчеты ▾</div>
+                    <div class="dropdown-content">
+                        <a href="finance.html">Финансы</a>
+                        <a href="schedule.html">График расчетов</a>
+                    </div>
+                </div>
+
+                <a href="qrcode.html" class="nav-link">Оплата по QR</a>
+            </nav>
+
+            <!-- ДИНАМИЧЕСКИЙ БЛОК ПРОФИЛЯ ПОЛЬЗОВАТЕЛЯ (ИМЯ СИНИМ ЦВЕТОМ) -->
+            <div class="user-menu" style="display: flex; flex-direction: column; align-items: flex-end; justify-content: center; gap: 4px; line-height: 1.3; padding: 4px 0; font-size: 14px; white-space: nowrap;">
+                <div id="nav-user-greeting" style="font-weight: 600; color: #0c56ea;">Загрузка...</div>
+                <div style="font-weight: 600; color: #000000;">
+                    Баланс: <span style="color: #16a34a;" id="nav-user-balance">0 ₽</span>
+                </div>
+                <a href="#" onclick="handleLogout(event)" style="color: #ef4444; text-decoration: none; font-size: 13px; font-weight: bold; margin-top: 2px;">Выход</a>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        
+        <!-- ЭКРАН 1: СПИСОК ЗАКАЗОВ -->
+        <div id="orders-list-screen">
+            <h2 style="margin-bottom: 20px;">История ваших заказов</h2>
+            <div class="table-responsive">
+                <table class="order-table">
+                    <thead>
+                        <tr>
+                            <th>Номер заказа</th>
+                            <th>Дата создания</th>
+                            <th>Дата поступления</th>
+                            <th>Сумма</th>
+                            <th>Статус</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="clickable-order-row" onclick="openOrderDetails('AM-789423')" style="cursor: pointer;">
+                            <td><strong style="color: #ea580c;">№ AM-789423</strong></td>
+                            <td>30.09.2026</td>
+                            <td>01.10.2026 (Ожидается)</td>
+                            <td><strong>9 700 ₽</strong></td>
+                            <td><span class="badge badge-processing">В обработке</span></td>
+                        </tr>
+                        <tr class="clickable-order-row" onclick="openOrderDetails('AM-785112')" style="cursor: pointer;">
+                            <td><strong style="color: #ea580c;">№ AM-785112</strong></td>
+                            <td>15.09.2026</td>
+                            <td>16.09.2026 (Выдан)</td>
+                            <td><strong>3 200 ₽</strong></td>
+                            <td><span class="badge badge-success-status">Выдан</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- ЭКРАН 2: ПОДРОБНАЯ ИНФОРМАЦИЯ -->
+        <div id="order-details-screen" style="display: none;">
+            
+            <button class="btn btn-secondary" onclick="closeOrderDetails()" style="margin-bottom: 20px; cursor: pointer;">
+                ← Назад к списку заказов
+            </button>
+
+            <div class="order-card">
+                <div class="order-header">
+                    <div>
+                        <h2 class="order-title" id="detail-order-number">Заказ № AM-789423</h2>
+                        <span class="order-date" id="detail-order-date">от 30 сентября 2026</span>
+                    </div>
+                    <span class="badge badge-processing" id="detail-order-badge">В обработке</span>
+                </div>
+
+                <!-- ТАЙМЛАЙН СТАТУСОВ -->
+                <div class="status-timeline">
+                    <div class="timeline-step completed">
+                        <div class="step-icon">✓</div>
+                        <div class="step-label">Создан</div>
+                        <div class="step-date" id="timeline-date-created">30.09, 19:05</div>
+                    </div>
+                    <div class="timeline-step active" id="timeline-step-2">
+                        <div class="step-icon">2</div>
+                        <div class="step-label" id="timeline-label-2">Подтвержден</div>
+                        <div class="step-date" id="timeline-date-2">Ожидается</div>
+                    </div>
+                    <div class="timeline-step" id="timeline-step-3">
+                        <div class="step-icon">3</div>
+                        <div class="step-label">В пути</div>
+                        <div class="step-date">—</div>
+                    </div>
+                    <div class="timeline-step" id="timeline-step-4">
+                        <div class="step-icon">4</div>
+                        <div class="step-label">Выдан</div>
+                        <div class="step-date">—</div>
+                    </div>
+                </div>
+
+                <h3>Содержимое заказа</h3>
+                <div class="table-responsive">
+                    <table class="order-table">
+                        <thead>
+                            <tr>
+                                <th>Артикул</th>
+                                <th>Бренд / Название запчасти</th>
+                                <th>Срок</th>
+                                <th>Кол-во</th>
+                                <th>Цена</th>
+                                <th>Сумма</th>
+                            </tr>
+                        </thead>
+                        <tbody id="detail-items-body">
+                            <!-- Элементы вставит JS -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- ИТОГО -->
+                <div class="order-summary" style="margin-top: 30px; border-top: 1px solid #e2e8f0; padding-top: 20px; text-align: right;">
+                    <div style="font-size: 20px;">Общая сумма: <strong style="color: #ea580c;" id="detail-total-amount">0 ₽</strong></div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!-- ЛОГИКА СЕССИЙ ПОЛЬЗОВАТЕЛЯ И ДИНАМИЧЕСКОГО РАЗВОРАЧИВАНИЯ ПОДРОБНОСТЕЙ ЗАКАЗА -->
+    <script>
+        // Интерактивная база состава заказов для детального просмотра
+        const localOrdersData = {
+            "AM-789423": {
+                date: "от 30 сентября 2026",
+                status: "В обработке",
+                badgeClass: "badge badge-processing",
+                total: "9 700 ₽",
+                timeline: ["30.09, 19:05", "Ожидается", "—", "—"],
+                items: [
+                    { art: "530037510", brand: "INA", desc: "Комплект ремня ГРМ с помпой", term: "1 день", qty: 1, price: 8400 },
+                    { art: "OC1051", brand: "MAHLE", desc: "Фильтр масляный двигателя", term: "В наличии", qty: 2, price: 650 }
+                ]
+            },
+            "AM-785112": {
+                date: "от 15 сентября 2026",
+                status: "Выдан",
+                badgeClass: "badge badge-success-status",
+                total: "3 200 ₽",
+                timeline: ["15.09, 10:14", "15.09, 12:30", "16.09, 09:00", "16.09, 14:20"],
+                items: [
+                    { art: "OC1051", brand: "MAHLE", desc: "Фильтр масляный MAHLE", term: "Выдан", qty: 2, price: 650 },
+                    { art: "530037510", brand: "INA", desc: "Ремень ГРМ INA с помпой", term: "Выдан", qty: 1, price: 1900 }
+                ]
+            }
+        };
+
+        // БЛОК 1: Автоматическая подгрузка сессии в шапку сайта
+        document.addEventListener('DOMContentLoaded', function() {
+            const savedName = localStorage.getItem('am_user_name');
+            const savedLogin = localStorage.getItem('am_user_login') || '123456@mail.ru';
+            const savedBalance = localStorage.getItem('am_user_balance') || '45200';
+
+            const greetingEl = document.getElementById('nav-user-greeting');
+            const balanceEl = document.getElementById('nav-user-balance');
+
+            if (savedName && savedName.trim() !== '') {
+                greetingEl.innerText = `Добрый день, ${savedName}!`;
+            } else {
+                greetingEl.innerText = `Добро пожаловать, ${savedLogin}`;
+            }
+
+            balanceEl.innerText = parseInt(savedBalance).toLocaleString('ru-RU') + ' ₽';
+        });
+
+        // Функция кнопки Выход
+        function handleLogout(event) {
+            event.preventDefault();
+            localStorage.clear();
+            window.location.href = 'index.html';
+        }
+
+        // БЛОК 2: Управление экранами (Переключение списков и деталей)
+        function openOrderDetails(orderId) {
+            const order = localOrdersData[orderId];
+            if (!order) return;
+
+            // Заполняем текстовые поля карточки заказа
+            document.getElementById('detail-order-number').innerText = `Заказ № ${orderId}`;
+            document.getElementById('detail-order-date').innerText = order.date;
+            
+            const badge = document.getElementById('detail-order-badge');
+            badge.innerText = order.status;
+            badge.className = order.badgeClass;
+
+            // Обновляем даты в таймлайне статусов
+            document.getElementById('timeline-date-created').innerText = order.timeline[0];
+            document.getElementById('timeline-date-2').innerText = order.timeline[1];
+            
+            // Если заказ выдан — переводим шаги таймлайна в завершённый вид
+            const step2 = document.getElementById('timeline-step-2');
+            const step3 = document.getElementById('timeline-step-3');
+            const step4 = document.getElementById('timeline-step-4');
+
+            if (order.status === "Выдан") {
+                step2.className = "timeline-step completed";
+                step3.className = "timeline-step completed";
+                step4.className = "timeline-step completed";
+                step4.querySelector('.step-icon').innerText = "✓";
+            } else {
+                step2.className = "timeline-step active";
+                step3.className = "timeline-step";
+                step4.className = "timeline-step";
+                step4.querySelector('.step-icon').innerText = "4";
+            }
+
+            // Рендерим таблицу содержимого
+            const itemsBody = document.getElementById('detail-items-body');
+            itemsBody.innerHTML = '';
+
+            order.items.forEach(item => {
+                const row = document.createElement('tr');
+                const subtotal = item.price * item.qty;
+                row.innerHTML = `
+                    <td><strong>${item.art}</strong></td>
+                    <td>${item.brand} <br><span class="parts-subtext">${item.desc}</span></td>
+                    <td>${item.term}</td>
+                    <td>${item.qty} шт.</td>
+                    <td>${item.price.toLocaleString()} ₽</td>
+                    <td><strong>${subtotal.toLocaleString()} ₽</strong></td>
+                `;
+                itemsBody.appendChild(row);
+            });
+
+            document.getElementById('detail-total-amount').innerText = order.total;
+
+            // Переключаем экраны видимости
+            document.getElementById('orders-list-screen').style.display = 'none';
+            document.getElementById('order-details-screen').style.display = 'block';
+        }
+
+        function closeOrderDetails() {
+            document.getElementById('order-details-screen').style.display = 'none';
+            document.getElementById('orders-list-screen').style.display = 'block';
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>АвтоМаркет — Регистрация</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- НАВИГАЦИОННАЯ ПАНЕЛЬ СВЕРХУ ПО ГОРИЗОНТАЛИ -->
+    <header class="main-header" style="background: none; border: none; box-shadow: none;">
+        <div class="header-top">
+            
+      
+            <!-- ЛОГОТИП АВТОМАРКЕТ В ВЕРХНЕМ ЛЕВЫМ УГЛУ (ТЕПЕРЬ КЛИКАБЕЛЬНЫЙ) -->
+<a href="index.html" class="logo" style="font-size: 22px; white-space: nowrap; margin-right: 25px; display: flex; align-items: center; gap: 8px; text-decoration: none;">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ea580c" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 2px 4px rgba(234, 88, 12, 0.2));">
+        <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/>
+        <path d="M12 6v6l4 2"/>
+        <circle cx="12" cy="12" r="1" fill="#ea580c"/>
+    </svg>
+    <span style="font-weight: 800; letter-spacing: -0.5px; color: #000000;">Авто<span style="color: #ea580c;">Маркет</span></span>
+</a>
+
+
+            <!-- ВЫБОР ГОРОДА -->
+            <div class="city-select">
+                <span>Город: </span>
+                <select>
+                    <option selected>Москва</option>
+                    <option>Пенза</option>
+                    <option>Санкт-Петербург</option>
+                </select>
+            </div>
+
+            <nav class="main-nav">
+                <a href="index.html" class="nav-link active">Главная</a>
+                
+               <!-- ГЛАВНОЕ МЕНЮ НАВИГАЦИИ (ОБНОВЛЕНО ПОД ФАЙЛ GLAVNAYA.HTML) -->
+<nav class="main-nav">
+    <!-- ИСПРАВЛЕНО: Ссылка ведет на glavnaya.html вместо index.html -->
+    <a href="glavnaya.html" class="nav-link">Главная</a>
+    
+    <!-- ВЫПАДАЮЩИЙ СПИСОК «КАТАЛОГИ» -->
+    <div class="dropdown">
+        <div class="nav-label">Каталоги ▾</div>
+        <div class="dropdown-content">
+            <a href="catalog.html">Оригинальный каталог</a>
+            <a href="china_catalog.html">Китайский каталог</a>
+            <a href="replacements_catalog.html">Каталог заменителей</a>
+            <a href="tyres_catalog.html">Каталог шин и дисков</a>
+            <a href="lamps_catalog.html">Автолампы</a>
+            <a href="garage.html">Гараж</a>
+        </div>
+    </div>
+
+    <a href="cart.html" class="nav-link">Корзина</a>
+    
+    <!-- ВЫПАДАЮЩИЙ СПИСОК «ЗАКАЗЫ» -->
+    <div class="dropdown">
+        <div class="nav-label">Заказы ▾</div>
+        <div class="dropdown-content">
+            <a href="orders.html?action=view">Заказы</a>
+            <a href="returns.html">Оформление возвратов</a>
+            <a href="claims.html">Оформление рекламаций</a>
+        </div>
+    </div>
+
+    <!-- ВЫПАДАЮЩИЙ СПИСОК «ВЗАИМОРАСЧЕТЫ» -->
+    <div class="dropdown">
+        <div class="nav-label">Взаиморасчеты ▾</div>
+        <div class="dropdown-content">
+            <a href="finance.html">Финансы</a>
+            <a href="schedule.html">График расчетов</a>
+        </div>
+    </div>
+
+    <a href="qrcode.html" class="nav-link">Оплата по QR</a>
+</nav>
+
+            <!-- МЕНЮ ПОЛЬЗОВАТЕЛЯ -->
+            <div class="user-menu">
+                <a href="login.html" class="nav-link" style="padding: 0;">Вход</a>
+            </div>
+
+        </div>
+    </header>
+
+    <!-- БЛОК РЕГИСТРАЦИИ СТРОГО ПО ЦЕНТРУ ЭКРАНА (АККУРАТНЫЙ И КОМПАКТНЫЙ) -->
+    <div class="login-wrapper" style="display: flex; justify-content: center; align-items: center; min-height: calc(100vh - 260px); padding: 40px 20px;">
+        <div class="login-card" style="max-width: 440px; width: 100%;">
+            <h2>Регистрация на платформе</h2>
+            <form action="login.html" method="GET">
+                
+                <!-- Обязательное поле: Фамилия -->
+                <div class="form-group-login">
+                    <label for="reg-surname">Фамилия <span style="color: #ea0c0c;">*</span></label>
+                    <input type="text" id="reg-surname" class="login-control" placeholder="Иванов" required>
+                </div>
+
+                <!-- Обязательное поле: Имя -->
+                <div class="form-group-login" style="margin-top: 15px;">
+                    <label for="reg-name">Имя <span style="color: #ea0c0c;">*</span></label>
+                    <input type="text" id="reg-name" class="login-control" placeholder="Иван" required>
+                </div>
+
+                <!-- Необязательное поле: Отчество -->
+                <div class="form-group-login" style="margin-top: 15px;">
+                    <label for="reg-patronymic">Отчество</label>
+                    <input type="text" id="reg-patronymic" class="login-control" placeholder="Иванович">
+                </div>
+                
+                <!-- Обязательное поле: Телефон -->
+                <div class="form-group-login" style="margin-top: 15px;">
+                    <label for="reg-phone">Телефон <span style="color: #ea0c0c;">*</span></label>
+                    <input type="tel" id="reg-phone" class="login-control" placeholder="+7 (999) 000-00-00" required>
+                </div>
+
+                <!-- Обязательное поле: E-mail -->
+                <div class="form-group-login" style="margin-top: 15px;">
+                    <label for="reg-email">E-mail <span style="color: #ea0c0c;">*</span></label>
+                    <input type="email" id="reg-email" class="login-control" placeholder="example@mail.ru" required>
+                </div>
+
+                <!-- Выбор города -->
+                <div class="form-group-login" style="margin-top: 15px;">
+                    <label for="reg-city">Выбор города <span style="color: #ea0c0c;">*</span></label>
+                    <select id="reg-city" class="login-control" style="background-color: #ffffff; cursor: pointer;" required>
+                        <option value="" disabled selected>Выберите ваш город</option>
+                        <option value="moscow">Москва</option>
+                        <option value="penza">Пенза</option>
+                        <option value="spb">Санкт-Петербург</option>
+                    </select>
+                </div>
+
+                <!-- Пароль -->
+                <div class="form-group-login" style="margin-top: 15px;">
+                    <label for="reg-password">Пароль <span style="color: #ea0c0c;">*</span></label>
+                    <input type="password" id="reg-password" class="login-control" placeholder="••••••••" required>
+                </div>
+
+                <!-- Повтор пароля -->
+                <div class="form-group-login" style="margin-top: 15px;">
+                    <label for="reg-password-confirm">Повтор пароля <span style="color: #ea0c0c;">*</span></label>
+                    <input type="password" id="reg-password-confirm" class="login-control" placeholder="••••••••" required>
+                </div>
+                
+                <button type="submit" class="btn-primary-custom" style="width: 100%; border: none; margin-top: 25px; padding: 12px; cursor: pointer;">
+                    Создать личный кабинет
+                </button>
+            </form>
+
+            <div class="login-footer" style="margin-top: 20px; text-align: center;">
+                <span>Уже есть аккаунт? </span>
+                <a href="login.html" style="color: var(--accent); font-weight: 600; text-decoration: none;">Выполнить вход</a>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 АвтоМаркет. Все права защищены. Платформа автоматизации снабжения B2B и B2C.</p>
+    </footer>
+</body>
+</html>

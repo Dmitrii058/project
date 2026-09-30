@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>АвтоМаркет — Вход в систему</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- НАВИГАЦИОННАЯ ПАНЕЛЬ СВЕРХУ ПО ГОРИЗОНТАЛИ -->
+    <header class="main-header" style="background: none; border: none; box-shadow: none;">
+        <div class="header-top">
+            
+            <!-- ЛОГОТИП АВТОМАРКЕТ В ВЕРХНЕМ ЛЕВЫМ УГЛУ (ТЕПЕРЬ КЛИКАБЕЛЬНЫЙ) -->
+            <a href="glavnaya.html" class="logo" style="font-size: 22px; white-space: nowrap; margin-right: 25px; display: flex; align-items: center; gap: 8px; text-decoration: none;">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ea580c" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 2px 4px rgba(234, 88, 12, 0.2));">
+                    <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/>
+                    <path d="M12 6v6l4 2"/>
+                    <circle cx="12" cy="12" r="1" fill="#ea580c"/>
+                </svg>
+                <span style="font-weight: 800; letter-spacing: -0.5px; color: #000000;">Авто<span style="color: #ea580c;">Маркет</span></span>
+            </a>
+
+            <!-- ВЫБОР ГОРОДА -->
+            <div class="city-select">
+                <span>Город: </span>
+                <select>
+                    <option selected>Москва</option>
+                    <option>Пенза</option>
+                    <option>Санкт-Петербург</option>
+                </select>
+            </div>
+
+            <!-- ГЛАВНОЕ МЕНЮ НАВИГАЦИИ (ОБНОВЛЕНО ПОД ФАЙЛ GLAVNAYA.HTML) -->
+            <nav class="main-nav">
+                <a href="glavnaya.html" class="nav-link">Главная</a>
+                
+                <div class="dropdown">
+                    <div class="nav-label">Каталоги ▾</div>
+                    <div class="dropdown-content">
+                        <a href="catalog.html">Оригинальный каталог</a>
+                        <a href="china_catalog.html">Китайский каталог</a>
+                        <a href="replacements_catalog.html">Каталог заменителей</a>
+                        <a href="tyres_catalog.html">Каталог шин и дисков</a>
+                        <a href="lamps_catalog.html">Автолампы</a>
+                        <a href="garage.html">Гараж</a>
+                    </div>
+                </div>
+
+                <a href="cart.html" class="nav-link">Корзина</a>
+                
+                <div class="dropdown">
+                    <div class="nav-label">Заказы ▾</div>
+                    <div class="dropdown-content">
+                        <a href="orders.html?action=view">Заказы</a>
+                        <a href="returns.html">Оформление возвратов</a>
+                        <a href="claims.html">Оформление рекламаций</a>
+                    </div>
+                </div>
+
+                <div class="dropdown">
+                    <div class="nav-label">Взаиморасчеты ▾</div>
+                    <div class="dropdown-content">
+                        <a href="finance.html">Финансы</a>
+                        <a href="schedule.html">График расчетов</a>
+                    </div>
+                </div>
+
+                <a href="qrcode.html" class="nav-link">Оплата по QR</a>
+            </nav>
+
+            <!-- ИСПРАВЛЕНО: Кнопка "Вход" удалена из правого верхнего угла, оставлен пустой невидимый флекс-блок для сохранения сетки -->
+            <div class="user-menu"></div>
+
+        </div>
+    </header>
+
+    <!-- БЛОК АВТОРИЗАЦИИ СТРОГО ПО ЦЕНТРУ ЭКРАНА -->
+    <div class="login-wrapper" style="display: flex; justify-content: center; align-items: center; min-height: calc(100vh - 260px); padding: 20px;">
+        <div class="login-card" style="max-width: 400px; width: 100%;">
+            <h2>Вход в АвтоМаркет</h2>
+            
+            <!-- ИСПРАВЛЕНО: Добавлен id формы и перехват события отправки onsubmit -->
+            <form id="loginForm" onsubmit="validateAdminLogin(event)">
+                <div class="form-group-login">
+                    <label for="username">Логин (E-mail или телефон)</label>
+                    <input type="text" id="username" class="login-control" placeholder="example@mail.ru" required>
+                </div>
+                <div class="form-group-login" style="margin-top: 15px;">
+                    <label for="password">Пароль</label>
+                    <input type="password" id="password" class="login-control" placeholder="••••••••" required>
+                </div>
+                
+                <button type="submit" class="btn-primary-custom" style="width: 100%; border: none; margin-top: 25px; padding: 12px; cursor: pointer;">
+                    Войти в личный кабинет
+                </button>
+            </form>
+            
+            <div style="margin-top: 20px; border-top: 1px solid rgba(253, 186, 116, 0.3); padding-top: 20px; text-align: center;">
+                <p style="font-size: 14px; margin-bottom: 10px; color: #000000; font-weight: 500;">Впервые на платформе?</p>
+                <a href="register.html" class="btn-secondary-custom" style="display: block; text-align: center; font-size: 14px; padding: 10px;">
+                    Зарегистрироваться
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 АвтоМаркет. Все права защищены. Платформа автоматизации снабжения B2B и B2C.</p>
+    </footer>
+    <!-- ЛОГИКА АДМИНИСТРАТОРСКОГО ВХОДА С СОХРАНЕНИЕМ СЕССИИ -->
+    <script>
+        function validateAdminLogin(event) {
+            event.preventDefault();
+
+            const usernameInput = document.getElementById('username').value.trim();
+            const passwordInput = document.getElementById('password').value.trim();
+
+            if (usernameInput === '123456@mail.ru' && passwordInput === '123456') {
+                // Сохраняем данные пользователя в память браузера. 
+                // Если бы это была регистрация, сюда падало бы реальное имя (например, "Иван")
+                localStorage.setItem('am_user_name', ''); // Имя не указано, оставляем пустым для теста правила
+                localStorage.setItem('am_user_login', usernameInput);
+                localStorage.setItem('am_user_balance', '45200');
+
+                window.location.href = 'glavnaya.html';
+            } else {
+                alert('Неверный логин или пароль администратора!');
+            }
+        }
+    </script>
+</body>
+</html>

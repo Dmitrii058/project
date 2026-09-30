@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>АвтоМаркет — Взаиморасчеты</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <!-- НАВИГАЦИОННАЯ ПАНЕЛЬ СВЕРХУ -->
+    <header class="main-header" style="background: none; border: none; box-shadow: none;">
+        <div class="header-top">
+            
+            <!-- ЛОГОТИП АВТОМАРКЕТ В ВЕРХНЕМ ЛЕВЫМ УГЛУ (КЛИКАБЕЛЬНЫЙ) -->
+            <a href="glavnaya.html" class="logo" style="font-size: 22px; white-space: nowrap; margin-right: 25px; display: flex; align-items: center; gap: 8px; text-decoration: none;">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ea580c" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/>
+                    <path d="M12 6v6l4 2"/>
+                    <circle cx="12" cy="12" r="1" fill="#ea580c"/>
+                </svg>
+                <span style="font-weight: 800; letter-spacing: -0.5px; color: #000000;">Авто<span style="color: #ea580c;">Маркет</span></span>
+            </a>
+
+            <!-- ГЛАВНОЕ МЕНЮ НАВИГАЦИИ (СДВИГАЕТ БЛОК ПРОФИЛЯ ВПРАВО) -->
+            <nav class="main-nav" style="margin-right: auto;">
+                <a href="glavnaya.html" class="nav-link">Главная</a>
+                
+                <div class="dropdown">
+                    <div class="nav-label">Каталоги ▾</div>
+                    <div class="dropdown-content">
+                        <a href="catalog.html">Оригинальный каталог</a>
+                        <a href="china_catalog.html">Китайский каталог</a>
+                        <a href="replacements_catalog.html">Каталог заменителей</a>
+                        <a href="tyres_catalog.html">Каталог шин и дисков</a>
+                        <a href="lamps_catalog.html">Автолампы</a>
+                        <a href="garage.html">Гараж</a>
+                    </div>
+                </div>
+
+                <a href="cart.html" class="nav-link">Корзина</a>
+                
+                <div class="dropdown">
+                    <div class="nav-label">Заказы ▾</div>
+                    <div class="dropdown-content">
+                        <a href="orders.html?action=view">Заказы</a>
+                        <a href="returns.html">Оформление возвратов</a>
+                        <a href="claims.html">Оформление рекламаций</a>
+                    </div>
+                </div>
+
+                <div class="dropdown">
+                    <div class="nav-label">Взаиморасчеты ▾</div>
+                    <div class="dropdown-content">
+                        <a href="finance.html" class="nav-link active">Финансы</a>
+                        <a href="schedule.html">График расчетов</a>
+                    </div>
+                </div>
+
+                <a href="qrcode.html" class="nav-link">Оплата по QR</a>
+            </nav>
+
+            <!-- ДИНАМИЧЕСКИЙ БЛОК ПРОФИЛЯ ПОЛЬЗОВАТЕЛЯ (ТЕПЕРЬ С СИНИМ ЦВЕТОМ ТЕКСТА) -->
+            <div class="user-menu" style="display: flex; flex-direction: column; align-items: flex-end; justify-content: center; gap: 4px; line-height: 1.3; padding: 4px 0; font-size: 14px; white-space: nowrap;">
+                <div id="nav-user-greeting" style="font-weight: 600; color: #0c56ea;">Загрузка...</div>
+                <div style="font-weight: 600; color: #000000;">
+                    Баланс: <span style="color: #16a34a;" id="nav-user-balance">0 ₽</span>
+                </div>
+                <a href="#" onclick="handleLogout(event)" style="color: #ef4444; text-decoration: none; font-size: 13px; font-weight: bold; margin-top: 2px;">Выход</a>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="finance-card">
+            <h2>Финансовое состояние и взаиморасчеты</h2>
+            <p style="color: #64748b; margin-top: -5px; margin-bottom: 25px;">Мониторинг движения средств, проведенных платежей и графиков погашения задолженностей.</p>
+
+            <!-- ИНФОРМАЦИОННЫЕ БЛОКИ С БАЛАНСОМ -->
+            <div class="finance-overview-grid">
+                <div class="overview-item positive">
+                    <div class="overview-label">Текущий баланс</div>
+                    <div class="overview-value" style="color: #16a34a;" id="finance-card-balance">+45 200 ₽</div>
+                </div>
+                <div class="overview-item">
+                    <div class="overview-label">Сумма в работе (Заказы)</div>
+                    <div class="overview-value">9 700 ₽</div>
+                </div>
+                <div class="overview-item warning">
+                    <div class="overview-label">Ближайший платеж</div>
+                    <div class="overview-value" style="color: #ea580c;">0 ₽</div>
+                </div>
+            </div>
+
+            <!-- ИНТЕРАКТИВНЫЕ ВКЛАДКИ -->
+            <div class="finance-tabs">
+                <button class="finance-tab-btn active" id="tab-btn-history" onclick="switchFinanceTab('history')">История операций</button>
+                <button class="finance-tab-btn" id="tab-btn-schedule" onclick="switchFinanceTab('schedule')">График платежей</button>
+            </div>
+
+            <!-- ВКЛАДКА 1: ИСТОРИЯ ОПЕРАЦИЙ -->
+            <div id="finance-tab-content-history" class="finance-screen-content">
+                <div class="finance-filter-bar">
+                    <input type="text" id="finance-search" class="custom-search-input" placeholder="Поиск по номеру документа или операции..." style="max-width: 350px;">
+                </div>
+
+                <div class="table-responsive">
+                    <table class="finance-table">
+                        <thead>
+                            <tr>
+                                <th>Дата</th>
+                                <th>Документ / Назначение платежа</th>
+                                <th>Тип</th>
+                                <th>Сумма операции</th>
+                            </tr>
+                        </thead>
+                        <tbody id="finance-history-rows">
+                            <tr>
+                                <td>30.09.2026</td>
+                                <td>Пополнение баланса (Оплата по QR, СБП)</td>
+                                <td>Приход</td>
+                                <td class="amount-plus">+15 000 ₽</td>
+                            </tr>
+                            <tr>
+                                <td>30.09.2026</td>
+                                <td>Списание по заказу № AM-789423</td>
+                                <td>Расход</td>
+                                <td class="amount-minus">-9 700 ₽</td>
+                            </tr>
+                            <tr>
+                                <td>15.09.2026</td>
+                                <td>Списание по заказу № AM-785112</td>
+                                <td>Расход</td>
+                                <td class="amount-minus">-3 200 ₽</td>
+                            </tr>
+                            <tr>
+                                <td>14.09.2026</td>
+                                <td>Авансовый платеж по безналичному расчету</td>
+                                <td>Приход</td>
+                                <td class="amount-plus">+43 100 ₽</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- ВКЛАДКА 2: ГРАФИК ПЛАТЕЖЕЙ -->
+            <div id="finance-tab-content-schedule" class="finance-screen-content" style="display: none;">
+                <p style="color: #64748b; margin-bottom: 15px;">Список предстоящих или просроченных платежей по заказам, оформленным в рассрочку или под реализацию:</p>
+                <div class="table-responsive">
+                    <table class="finance-table">
+                        <thead>
+                            <tr>
+                                <th>Крайний срок</th>
+                                <th>Основание задолженности</th>
+                                <th>Сумма к оплате</th>
+                                <th>Текущий статус</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>—</td>
+                                <td>Плановые задолженности отсутствуют</td>
+                                <td>0 ₽</td>
+                                <td style="color: #16a34a; font-weight: 600;">Оплачено в срок</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <!-- ЛОГИКА СЕССИЙ, ВКЛАДОК И ТАБЛИЧНОГО ПОИСКА -->
+    <script>
+        // БЛОК 1: Подтягивание сессии в шапку и карточку баланса
+        document.addEventListener('DOMContentLoaded', function() {
+            const savedName = localStorage.getItem('am_user_name');
+            const savedLogin = localStorage.getItem('am_user_login') || '123456@mail.ru';
+            const savedBalance = localStorage.getItem('am_user_balance') || '45200';
+
+            const greetingEl = document.getElementById('nav-user-greeting');
+            const balanceEl = document.getElementById('nav-user-balance');
+            const cardBalanceEl = document.getElementById('finance-card-balance');
+
+            if (savedName && savedName.trim() !== '') {
+                greetingEl.innerText = `Добрый день, ${savedName}!`;
+            } else {
+                greetingEl.innerText = `Добро пожаловать, ${savedLogin}`;
+            }
+
+            const formattedBalance = parseInt(savedBalance).toLocaleString('ru-RU') + ' ₽';
+            balanceEl.innerText = formattedBalance;
+            if (cardBalanceEl) {
+                cardBalanceEl.innerText = '+' + formattedBalance;
+            }
+        });
+
+        // Функция кнопки Выход
+        function handleLogout(event) {
+            event.preventDefault();
+            localStorage.clear();
+            window.location.href = 'index.html';
+        }
+
+        // БЛОК 2: Функция переключения между Историей и Графиком платежей
+        function switchFinanceTab(tabName) {
+            document.querySelectorAll('.finance-screen-content').forEach(content => {
+                content.style.display = 'none';
+            });
+            
+            document.querySelectorAll('.finance-tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+
+            document.getElementById('finance-tab-content-' + tabName).style.display = 'block';
+            document.getElementById('tab-btn-' + tabName).classList.add('active');
+        }
+
+        // БЛОК 3: Логика живого поиска / фильтрации документов в таблице
+        const financeSearch = document.getElementById('finance-search');
+        if (financeSearch) {
+            financeSearch.addEventListener('input', function() {
+                const filterText = this.value.toLowerCase();
+                const rows = document.querySelectorAll('#finance-history-rows tr');
+
+                rows.forEach(row => {
+                    const rowText = row.innerText.toLowerCase();
+                    if (rowText.includes(filterText)) {
+                        row.style.display = ''; 
+                    } else {
+                        row.style.display = 'none'; 
+                    }
+                });
+            });
+        }
+    </script>
+</body>
+</html>
